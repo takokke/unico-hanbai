@@ -1,0 +1,16 @@
+{
+  "name": "hanbaibu-2",
+  "version": "1.0.0",
+  "description": "ユニコ　販売・問合の新旧連携機能",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@cybozu/eslint-config": "^23.0.0",
+    "eslint": "^8.57.1"
+  }
+}
