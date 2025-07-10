@@ -123,20 +123,9 @@
     // レコード作成、編集画面表示イベント
     kintone.events.on(['app.record.create.submit.success', 'app.record.edit.submit.success'], async (event) => {
       const record = event.record;
-
-
-
-
+  
       const meisai = record.明細.value;
       const client = new KintoneRestAPIClient();
-
-      // 取引先コード、部品名と仕入先、受注日
-      //  1613
-
-      
-  
-
-
    
       const body1 = {
         app: 75, // 部品状態_0 のアプリID

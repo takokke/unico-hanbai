@@ -1,6 +1,8 @@
 (() => {
     'use strict';
 
+    const toiawaseAppId = 1613;
+
     // レコード作成、編集画面表示イベント
     kintone.events.on(['app.record.create.show', 'app.record.edit.show'], function (event) {
         // すでにボタンがあれば追加しない
@@ -128,10 +130,8 @@
         const meisai = record.明細.value;
         const serialNumber = record.問合・販売番号.value;
 
-        const client = new KintoneRestAPIClient();
-
         const body1 = {
-            app: 1613,
+            app: toiawaseAppId,
             upsert: true,
             records: []
         };
@@ -144,8 +144,8 @@
             const data = meisai[i-1].value;
             console.log(data);
 
-            let newSerialNumber = serialNumber + "-" +genBranch(i)
-            console.log(newSerialNumber)
+            let newSerialNumber = serialNumber + "-" +genBranch(i);
+            console.log(newSerialNumber);
 
             body1.records.push({
                 updateKey: {
@@ -153,8 +153,140 @@
                     value: newSerialNumber
                 },
                 record: {
+                    お客様検索: {
+                        value: record.お客様検索.value
+                    },
+                    取引先コード: {
+                        value: record.取引先コード.value
+                    },
+                    取引先名１: {
+                        value: record.取引先名１.value
+                    },
+                    取引先名カナ: {
+                        value: record.取引先名カナ.value
+                    },
+                    文字列__1行_: {
+                        value: record.文字列__1行_.value
+                    },
+                    略称: {
+                        value: record.略称.value
+                    },
+                    分類: {
+                        value: record.分類.value
+                    },
+                    取引先名２: {
+                        value: record.取引先名２.value
+                    },
+                    データ入力日: {
+                        value: record.データ入力日.value
+                    },
+                    日付: {
+                        value: record.日付.value
+                    },
+                    郵便番号: {
+                        value: record.郵便番号.value
+                    },
+                    住所1: {
+                        value: record.住所1.value
+                    },
+                    住所2: {
+                        value: record.住所2.value
+                    },
+                    住所3: {
+                        value: record.住所3.value
+                    },
+                    電話番号2: {
+                        value: record.電話番号2.value
+                    },
+                    FAX番号1: {
+                        value: record.FAX番号1.value
+                    },
+                    備考: {
+                        value: record.備考.value
+                    },
+                    入金予定: {
+                        value: record.入金予定.value
+                    },
+                    入金予定日: {
+                        value: record.入金予定日.value
+                    },
+                    売掛締日: {
+                        value: record.売掛締日.value
+                    },
+                    入金方法: {
+                        value: record.入金方法.value
+                    },
+                    支払予定: {
+                        value: record.支払予定.value
+                    },
+                    支払予定日: {
+                        value: record.支払予定日.value
+                    },
+                    買掛締日: {
+                        value: record.買掛締日.value
+                    },
+                    支払方法: {
+                        value: record.支払方法.value
+                    },
+                    登録番号: {
+                        value: record.登録番号.value
+                    },
+                    電話番号1: {
+                        value: record.電話番号1.value
+                    },
+                    問い合わせ媒体: {
+                        value: record.問い合わせ媒体.value
+                    },
                     見積結果: {
                         value: data.明細_見積結果.value
+                    },
+                    ドロップダウン: {
+                        value: record.ドロップダウン.value
+                    },
+                    車種: {
+                        value: record.車種.value
+                    },
+                    車名: {
+                        value: record.車名.value
+                    },
+                    型式: {
+                        value: record.型式.value
+                    },
+                    類型: {
+                        value: record.類型.value
+                    },
+                    年式: {
+                        value: record.年式.value
+                    },
+                    カラー: {
+                        value: record.カラー.value
+                    },
+                    エンジン: {
+                        value: record.エンジン.value
+                    },
+                    お問合せ内容詳細: {
+                        value: record.お問合せ内容詳細.value
+                    },
+                    ユニコ見積担当: {
+                        value: record.ユニコ見積担当.value
+                    },
+                    見積提示日: {
+                        value: record.見積提示日.value
+                    },
+                    受注日: {
+                        value: record.受注日.value
+                    },
+                    保証期限: {
+                        value: record.保証期限.value
+                    },
+                    見積媒体: {
+                        value: record.見積媒体.value
+                    },
+                    管理番号: {
+                        value: record.管理番号.value
+                    },
+                    仕入先_0: {
+                        value: record.仕入先_0.value
                     },
                     部品_大分類: {
                         value: data.明細_部品_大分類.value
@@ -178,16 +310,13 @@
                         value: data.明細_仕入金額.value
                     },
                     送料 : {
-                        value: data.送料.value
+                        value: data.明細_送料.value
                     },
                     仕入先: {
-                        value: data.明細_部品名.value
-                    },
-                    部品名: {
                         value: data.明細_仕入先.value
                     },
                     集計対象: {
-                        value: data.削除FLG.value == ["削除"] ? ["OK"] : []
+                        value: data.削除FLG.value
                     },
 
                 }
@@ -198,10 +327,19 @@
         console.log(body1)
         
         if (body1.records.length !== 0 ) {
-          await client.record.updateAllRecords(body1);
+            await kintone.api(
+              kintone.api.url('/k/v1/records', true),
+              'PUT',
+              body1
+            ).then(function(response) {
+              // 成功時
+              console.log('更新成功:', response);
+            }).catch(function(error) {
+              // 失敗時
+              console.error('更新失敗:', error);
+            });
         }
        
-        console.log("販売・問合せに保存しました")
       } catch (error) {
         console.error('アップサートエラー:', error);
         event.error = '明細情報の保存中にエラーが発生しました。';
