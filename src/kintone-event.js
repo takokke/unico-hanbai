@@ -69,7 +69,7 @@
             type: record.record['明細'].value[0].value.明細_部品CD.type
           },
           受注日_0: {
-            value: undefined,
+            value: record.record.受注日.value,
             type: record.record['明細'].value[0].value.受注日_0.type
           },
           削除FLG: {
@@ -77,17 +77,38 @@
             type: record.record['明細'].value[0].value.削除FLG.type
           },
           件数: {
-            value: undefined,
+            value: 1,
             type: record.record['明細'].value[0].value.件数.type
+          },
+          明細_見積媒体: {
+            value: record.record['見積媒体'].value,
+            type: record.record['明細'].value[0].value.明細_見積媒体.type
+          },
+          明細_管理番号: {
+            value: record.record.管理番号.value,
+            type: record.record.明細.value[0].value.明細_管理番号.type
+          },
+          明細_発送先: {
+            value: record.record.発送先.value,
+            type: record.record.明細.value[0].value.明細_発送先.type
+          },
+          明細_リビルト保証期限: {
+            value: record.record.保証期限.value,
+            type: record.record.明細.value[0].value.明細_リビルト保証期限.type
           }
         }
       };
 
       // 行を追加
-      if (record.record['明細'].value[0].value.明細_中分類.value === undefined &&
+      if (record.record['明細'].value[0].value.受注日_0.value === undefined &&
+            record.record.明細.value[0].value.明細_部品_大分類.value === undefined &&
+            record.record['明細'].value[0].value.明細_中分類.value === undefined &&
             record.record['明細'].value[0].value.明細_部品名.value === undefined &&
             record.record['明細'].value[0].value.部品状態_0.value === undefined &&
+            record.record.明細.value[0].value.明細_見積媒体.value === undefined &&
+            record.record.明細.value[0].value.明細_管理番号.value === undefined &&
             record.record['明細'].value[0].value.明細_仕入先.value === undefined &&
+            record.record.明細.value[0].value.明細_発送先.value === undefined &&
             record.record['明細'].value[0].value.明細_見積金額.value === undefined &&
             record.record['明細'].value[0].value.明細_仕入金額.value === undefined &&
             record.record['明細'].value[0].value.明細_送料.value === undefined &&
@@ -110,6 +131,9 @@
       record.record.見積金額.value = undefined;
       record.record.仕入金額.value = undefined;
       record.record.送料_0.value = undefined;
+      record.record.見積媒体.value = undefined;
+      record.record.管理番号.value = undefined;
+      record.record.発送先.value = undefined;
 
       // 反映
       kintone.app.record.set(record);
@@ -137,7 +161,7 @@
 
       allRecords.push({
         updateKey: {
-          field: 'kintone管理番号',
+          field: '販売管理kintone管理番号',
           value: newSerialNumber
         },
         record: {
@@ -181,10 +205,9 @@
           お問合せ内容詳細: {value: record.お問合せ内容詳細.value},
           ユニコ見積担当: {value: record.ユニコ見積担当.value},
           見積提示日: {value: record.見積提示日.value},
-          保証期限: {value: record.保証期限.value},
-          見積媒体: {value: record.見積媒体.value},
-          管理番号: {value: record.管理番号.value},
-          仕入先_0: {value: record.仕入先_0.value},
+          保証期限: {value: data.明細_リビルト保証期限.value},
+          見積媒体: {value: data.明細_見積媒体.value},
+          管理番号: {value: data.明細_管理番号.value},
           部品_大分類: {value: data.明細_部品_大分類.value},
           受注日: {value: data.受注日_0.value},
           中分類: {value: data.明細_中分類.value},
@@ -194,7 +217,10 @@
           仕入金額: {value: data.明細_仕入金額.value},
           送料: {value: data.明細_送料.value},
           仕入先: {value: data.明細_仕入先.value},
-          集計対象: {value: data.削除FLG.value}
+          削除FLG: {value: data.削除FLG.value},
+          件数: {value: data.件数.value},
+          発送先: {value: data.明細_発送先.value},
+          仕入先_0: {value: data.明細_発送先.value}
         }
       });
     }
